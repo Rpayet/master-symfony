@@ -12,7 +12,17 @@ use Symfony\Component\Routing\Annotation\Route;
 class ProductController extends AbstractController
 {
     #[Route('/product/create', name: 'app_product_create')]
-    public function create(EntityManagerInterface $entityManager): Response
+    public function create()
+    {
+        $form = $this->createForm(ProductType::class);
+
+        return $this->render('product/create.html.twig', [
+            'form' => $form,
+        ]);
+    }
+
+    #[Route('/product/create-one', name: 'app_product_create_one')]
+    public function createOne(EntityManagerInterface $entityManager): Response
     {
         $product = new Product();
         $product->setName('Chaise');
