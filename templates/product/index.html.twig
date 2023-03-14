@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Products Page{% endblock %}
+
+{% block body %}
+
+    <h1>Liste des produits</h1>
+
+    <ul>
+        {% for product in products %}
+            <li>
+                <h4>{{ product.name }}</h4>
+                <p>{{ product.price / 100 }} €</p>
+                <a href="{{ path('app_product_show', { id: product.id }) }}">Voir le produit</a>
+            
+            </li>
+        {% endfor %}
+    
+    </ul>
+
+{% endblock %}
