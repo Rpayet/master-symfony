@@ -4,6 +4,8 @@ namespace App\Entity;
 
 use App\Repository\PostRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+
 
 #[ORM\Entity(repositoryClass: PostRepository::class)]
 class Post
@@ -14,12 +16,15 @@ class Post
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank]
     private ?string $name = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank]
     private ?string $content = null;
 
     #[ORM\Column]
+    #[Assert\GreaterThanOrEqual('today', message: 'Mauvais timing')]
     private ?\DateTimeImmutable $publishedAt = null;
 
     #[ORM\Column]
@@ -35,7 +40,7 @@ class Post
         return $this->name;
     }
 
-    public function setName(string $name): self
+    public function setName(?string $name): self
     {
         $this->name = $name;
 
@@ -47,7 +52,7 @@ class Post
         return $this->content;
     }
 
-    public function setContent(string $content): self
+    public function setContent(?string $content): self
     {
         $this->content = $content;
 

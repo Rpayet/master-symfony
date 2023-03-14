@@ -1,0 +1,22 @@
+{% extends "base.html.twig" %}
+
+{% block title %}
+
+    Modifier l'article {{ post.name }} - {{ parent() }}
+
+{% endblock %}
+
+{% block body %}
+
+    <h1>Exercice - Création page Post</h1>
+    <h2>Modifier {{ post.name }}</h2>
+
+    {{ form_start(form) }}
+
+        {{ form_widget(form)}}
+
+        <button formnovalidate>Modifier</button>
+
+    {{ form_end(form) }}
+
+{% endblock %}

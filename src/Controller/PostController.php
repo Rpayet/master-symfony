@@ -3,18 +3,70 @@
 namespace App\Controller;
 
 use App\Entity\Post;
+use App\Form\PostType;
+use App\Repository\PostRepository;
 use App\Repository\ProductRepository;
 use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 class PostController extends AbstractController
 {
+    #[Route('/post/new', name: 'app_post_new')]
+    public function new(Request $request, EntityManagerInterface $entityManager): Response
+    {
+        $post = new Post();
+        $post->setpublishedAt(new DateTimeImmutable());
+        $form = $this->createForm(PostType::class, $post);
 
-    #[Route('/post/create', name: 'app_post_create')]
-    public function create(EntityManagerInterface $entityManager): Response
+        $form->handleRequest($request);
+
+        if($form->isSubmitted() && $form->isValid())
+        {
+            $entityManager->persist($post);
+            $entityManager->flush();
+
+            $this->addFlash('success', 'Merci '.$post->getName().' pour votre message.');
+
+            return $this->redirectToRoute('app_post');
+        }
+
+        return $this->render('post/new.html.twig', [
+            'form' => $form,
+            
+        ]);
+    }
+
+    #[Route('/post/edit/{id}', name: 'app_post_edit')]
+    public function edit(Post $post, Request $request, EntityManagerInterface $entityManager): Response
+    {
+        $form = $this->createForm(PostType::class, $post);
+
+        $form->handleRequest($request);
+
+        if($form->isSubmitted() && $form->isValid())
+        {
+            $entityManager->persist($post);
+            $entityManager->flush();
+
+            $this->addFlash('success', 'Merci '.$post->getName().' pour votre message.');
+
+            return $this->redirectToRoute('app_post');
+        }
+
+        return $this->render('post/edit.html.twig', [
+            'form' => $form,
+            'post' => $post,
+        ]);
+    }
+    
+    // Delete
+
+    #[Route('/post/create-one', name: 'app_post_create_one')]
+    public function createOne(EntityManagerInterface $entityManager): Response
     {
         $post = new Post();
         $post->setName('Billy')
@@ -58,11 +110,11 @@ class PostController extends AbstractController
     }
 
     #[Route('/post', name: 'app_post')]
-    public function index(ProductRepository $repository): Response
+    public function index(PostRepository $repository): Response
     {
 
         return $this->render('post/index.html.twig', [
-            'post' => $repository->findall(),
+            'posts' => $repository->findall(),
         ]);
     }
 
