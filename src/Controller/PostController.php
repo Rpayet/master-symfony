@@ -123,13 +123,18 @@ class PostController extends AbstractController
     {
         $date = $request->get('date'); // $_GET['date']
 
-        $validator->validate($date, [
+        $errors = $validator->validate($date, [
             new Date()
         ]);
+
+        if (count($errors) > 0){
+            $date = date('Y-m-d');
+        }
 
         return $this->render('post/index.html.twig', [
             // 'posts' => $repository->findBy(['active' => true]),
             'posts' => $repository->findAllActives($date),
+            'date' => $date,
         ]);
     }
 
