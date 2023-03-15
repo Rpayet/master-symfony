@@ -14,6 +14,12 @@
             <li>
                 <h4>{{ product.name }}</h4>
                 <p>{{ product.price / 100 }} €</p>
+
+                {% if product.image %}
+                    <img src="{{ product.image }}" alt="{{ product.name }}">
+                
+                {% endif %}
+                
                 <a href="{{ path('app_product_show', { id: product.id }) }}">Voir le produit</a>
             
             </li>
