@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Post;
+use DateTime;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -37,6 +38,17 @@ class PostRepository extends ServiceEntityRepository
         if ($flush) {
             $this->getEntityManager()->flush();
         }
+    }
+
+    public function findAllActives($date = 'now')
+    {
+        $queryBuilder = $this->createQueryBuilder('p') // Select * FROM post p
+            ->where('p.active = true')
+            ->andWhere('p.publishedAt < :published')
+            ->setParameter('published', new DateTime($date))
+            ->getQuery();
+        
+        return $queryBuilder->getResult();
     }
 
 //    /**

@@ -31,7 +31,7 @@ class AppFixtures extends Fixture
             $post = new Post();
             $post->setName($faker->name());
             $post->setContent($faker->text());
-            $post->setPublishedAt(DateTimeImmutable::createFromMutable($faker->datetime()));
+            $post->setPublishedAt(DateTimeImmutable::createFromMutable($faker->dateTimeBetween('-30 days', '30 days')));
             $post->setActive((bool)random_int(0, 1));
 
             $manager->persist($post);

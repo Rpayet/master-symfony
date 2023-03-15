@@ -12,6 +12,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Validator\Constraints\Date;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class PostController extends AbstractController
 {
@@ -117,11 +119,17 @@ class PostController extends AbstractController
     }
 
     #[Route('/post', name: 'app_post')]
-    public function index(PostRepository $repository): Response
+    public function index(Request $request, PostRepository $repository, ValidatorInterface $validator): Response
     {
+        $date = $request->get('date'); // $_GET['date']
+
+        $validator->validate($date, [
+            new Date()
+        ]);
 
         return $this->render('post/index.html.twig', [
-            'posts' => $repository->findall(),
+            // 'posts' => $repository->findBy(['active' => true]),
+            'posts' => $repository->findAllActives($date),
         ]);
     }
 
