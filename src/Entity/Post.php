@@ -33,6 +33,7 @@ class Post
     #[ORM\ManyToOne(inversedBy: 'title')]
     private ?PostCategory $postCategory = null;
 
+
     public function getId(): ?int
     {
         return $this->id;
@@ -97,4 +98,5 @@ class Post
 
         return $this;
     }
+
 }
