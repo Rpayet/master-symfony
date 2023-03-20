@@ -20,6 +20,9 @@ class ProductType extends AbstractType
                 'divisor' => 100,
             ]) 
             ->add('image')
+            ->add('category', null, [
+                'choice_label' => 'name',
+            ])
         ;
     }
 

@@ -13,6 +13,11 @@
         {% for product in products %}
             <li>
                 <h4>{{ product.name }}</h4>
+                
+                {% if product.category %}
+                    <p>{{ product.category.name }}</p>
+                {% endif %}
+                
                 <p>{{ product.price / 100 }} €</p>
 
                 {% if product.image %}
