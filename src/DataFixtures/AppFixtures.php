@@ -4,6 +4,7 @@ namespace App\DataFixtures;
 
 use App\Entity\Category;
 use App\Entity\Post;
+use App\Entity\PostCategory;
 use App\Entity\Product;
 use DateTimeImmutable;
 use Doctrine\Bundle\FixturesBundle\Fixture;
